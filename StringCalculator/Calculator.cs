@@ -18,10 +18,10 @@ namespace StringCalculator
             {
                 // split the delimiter defnition(s) and the numbers.
                 var splitOnFirstNewLine = numbers.Split(new[] { '\n' }, 2);
-
-                // check for single custom delimiters like ';'
+                
                 try
-                {                  
+                {   
+                    // check for single custom delimiters like ';'               
                     delimiters.Add(splitOnFirstNewLine[0].Replace("//", string.Empty).Single().ToString());
                 }
                 catch (InvalidOperationException)
@@ -46,7 +46,7 @@ namespace StringCalculator
                 .Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries)
                 .Select(int.Parse).ToList();
 
-            // Get all negative numberts.
+            // Get all negative numbers.
             var negativeNumbers = splitNumbers.Where(x => x < 0).ToList();
 
             // Throw an exception, if negative numbers are included
