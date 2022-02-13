@@ -82,5 +82,49 @@ namespace StringCalculator.Tests
             action.Should().Throw<Exception>()
                 .WithMessage("Negatives not allowed: " + negativeNumbers);
         }
+
+        [Theory]
+        [InlineData("//;\n1;1001", 1)]
+        [InlineData("//;\n1;10000;4", 5)]
+        public void Add_AddsAnyNumbers_NumbersBiggerThan1000ShouldBeIgnored(string calculation, int expected)
+        {
+            // Arrange
+            var sut = new Calculator();
+
+            // Act
+            var result = sut.Add(calculation);
+
+            // Assert
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("//[***]\n1***2***3", 6)]
+        public void Add_AddsNumbersUsingCustomDelimiterOfAnyLength_WhenStringIsValid(string calculation, int expected)
+        {
+            // Arrange
+            var sut = new Calculator();
+
+            // Act
+            var result = sut.Add(calculation);
+
+            // Assert
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("//[%][*]\n1*2%3", 6)]
+        [InlineData("//[%%][---][****]\n1,2%%3---4****5%%1001", 15)]
+        public void Add_AddsNumbersUsingMultipleCustomDelimiterOfAnyLength_WhenStringIsValid(string calculation, int expected)
+        {
+            // Arrange
+            var sut = new Calculator();
+
+            // Act
+            var result = sut.Add(calculation);
+
+            // Assert
+            result.Should().Be(expected);
+        }
     }
 }
