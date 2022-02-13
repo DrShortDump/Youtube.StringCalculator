@@ -30,25 +30,21 @@ namespace StringCalculator
                 {
                     if (ex is InvalidOperationException)
                     {
-                        // Sequence contains more than one element.
-
+                        // Delimiter sequence contains more than one element.
                         StringBuilder sb = new StringBuilder(splitOnFirstNewLine[0]);
                         sb.Replace("//", string.Empty);
 
-                        // custom delitmiter of any length e.g. "[*][%%][---]".
+                        // check for custom delimiters of any length enclosed by "[]" e.g. "[*][%%][---]".
                         Regex reg = new Regex($"{Regex.Escape("[")}[^{Regex.Escape("]")}]+{Regex.Escape("]")}");
-                        MatchCollection matches = reg.Matches(sb.ToString());
-                        if (matches.Count > 0)
+                        foreach (Match m in reg.Matches(sb.ToString()))
                         {
-                            foreach (Match m in matches)
-                            {
-                                delimiters.Add(m.Value.Substring(1, m.Value.Length - 2));
-                            }
+                            // Extract delimiters.
+                            delimiters.Add(m.Value.Substring(1, m.Value.Length - 2));
                         }
                     }
                 }
 
-                // split the number string with all known delimiters.
+                // split the number string at all known delimiters.
                 numbers = splitOnFirstNewLine[1];
             }
 
